@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingStack.Dynamo", "MappingStack.Dynamo\MappingStack.Dynamo.csproj", "{1F5F37C9-6152-403E-9DE1-8E2231D1A1F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingStack.Dynamo.Testing.UnitTests", "MappingStack.Dynamo.Testing.UnitTests\MappingStack.Dynamo.Testing.UnitTests.csproj", "{66F36A33-5C5C-408F-9290-6F6CE64F857B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E383816E-3889-46D3-A2CF-D6094E4C168E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		VersionInfo.cs = VersionInfo.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F5F37C9-6152-403E-9DE1-8E2231D1A1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5F37C9-6152-403E-9DE1-8E2231D1A1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5F37C9-6152-403E-9DE1-8E2231D1A1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5F37C9-6152-403E-9DE1-8E2231D1A1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F36A33-5C5C-408F-9290-6F6CE64F857B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F36A33-5C5C-408F-9290-6F6CE64F857B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F36A33-5C5C-408F-9290-6F6CE64F857B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F36A33-5C5C-408F-9290-6F6CE64F857B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14F813EE-C978-4D82-9CD5-B36593976288}
+	EndGlobalSection
+EndGlobal
