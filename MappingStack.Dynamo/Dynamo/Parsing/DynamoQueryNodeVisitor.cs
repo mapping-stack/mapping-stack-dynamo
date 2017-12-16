@@ -5,10 +5,9 @@
 
     using Microsoft.OData.UriParser;
 
-    using MappingStack.DynamicProperties;
     using MappingStack.LambdaReflection.Extensions;
     using MappingStack.OData.Parsing.Extensions;
-    using MappingStack.OData.QueryNodeVisiting;
+    using MappingStack.OData.Parsing.QueryNodeVisitors;
 
     public class DynamoQueryNodeVisitor
         : QueryNodeNormalizingVisitor

@@ -4,10 +4,10 @@
 
 using System.Reflection;
 
-[assembly: AssemblyVersion("0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.1")]
+[assembly: AssemblyVersion             ("0.0.0"        )]
+[assembly: AssemblyFileVersion         ("0.0.0.1"      )]
 
-[assembly: AssemblyInformationalVersion("0.0.0-alpha")]  // Semantic Version 2.0 here: -rc, -beta, -alpha
+[assembly: AssemblyInformationalVersion("0.0.0-alpha"  )]  // Semantic Version 2.0 here: -rc, -beta, -alpha
 // https://docs.microsoft.com/en-us/nuget/create-packages/prerelease-packages
 // NUGET: https://blog.nuget.org/20140924/supporting-semver-2.0.0.html
 // http://semver.org/

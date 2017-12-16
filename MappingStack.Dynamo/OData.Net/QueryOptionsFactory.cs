@@ -7,11 +7,11 @@
     using System.Net.Http;
     using System.Text;
     using System.Text.RegularExpressions;
-    
+    using System.Web.Http;
     using System.Web.OData;
     using System.Web.OData.Extensions;
     using System.Web.OData.Query;
-
+    
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
 
@@ -21,37 +21,29 @@
     public class QueryOptionsFactory // TODO: remake it in cloning-adjusting way
     {
         private readonly Dictionary<string, string> @params = new Dictionary<string, string>();
-
-        // private readonly ODataQueryOptions _options;
-
+        
+        private readonly ODataQueryOptions _originalOptions;
         private readonly IEdmModel _edmModel;
-        private readonly ODataValidationSettings _validationSettings;
         private readonly Type _elementClrType;
+        private readonly ODataValidationSettings _validationSettings;
 
-        public QueryOptionsFactory(IEdmModel edmModel, Type elementClrType) : this(edmModel, null, elementClrType) {}
+        private string BaseRequestUri => Uri != null ? $"{Uri.Scheme}{Uri.SchemeDelimiter}{Uri.Authority}{Uri.LocalPath}" : "https://fake.org/odata/controller";
 
-        // TODO: remake it in cloning-adjusting way
-        public QueryOptionsFactory(ODataQueryOptions options)
-            : this(
-                // options,
-                options.Context.Model,
-                new ODataValidationSettings(),
-                options.Context.ElementClrType
-            )
+        private HttpConfiguration Config  => GetOriginalHttpConfig()               ?? GetNewHttpConfig();
+        private ODataQueryContext Context => _originalOptions?.Context             ?? GetODataQueryContext();
+        private Uri Uri                   => _originalOptions?.Request?.RequestUri /*?? new Uri("https://fake.org/odata/controller")*/;
+
+        public QueryOptionsFactory(IEdmModel edmModel, Type elementClrType)
         {
+            _edmModel = edmModel;
+            _elementClrType = elementClrType;
+            _validationSettings = null; // new ODataValidationSettings();
         }
 
-        private QueryOptionsFactory(
-            // ODataQueryOptions options, 
-              IEdmModel edmModel
-            , ODataValidationSettings validationSettings // TODO: construct validation settings using Controller; do not validate if null ??
-            , Type elementClrType
-        )
+        public QueryOptionsFactory(ODataQueryOptions options)
+            : this(options.Context.Model, options.Context.ElementClrType)
         {
-            // _options = options;
-            _edmModel = edmModel;
-            _validationSettings = validationSettings;
-            _elementClrType = elementClrType; // typeof(TDto);
+            _originalOptions = options;
         }
 
         //private Dictionary<string, string> @paramsToInclude { get { return @params.Where(_ => _.Value != null); } }
@@ -72,9 +64,7 @@
 
         public string Count   { get { return @params[Q.Count  ]; } set { SetParam(Q.Count  , value); } }
 
-        // public int? MaxExpansionDepth { get; set; }
-
-        private string requestUri
+        private string RequestUri
         {
             get 
             {
@@ -85,7 +75,8 @@
                     acc.Append(f.Key).Append("=").Append(f.Value);
                     @params.Skip(1).Aggregate(acc, (a, _) => a.Append("&").Append(_.Key).Append("=").Append(_.Value));
                 }
-                return $"https://fake.org/?{acc}";
+                // return $"https://fake.org/odata/controller?{acc}";
+                return $"{BaseRequestUri}?{acc}";
             }
         }
 
@@ -105,9 +96,12 @@
 
         public ODataQueryOptions Get(/* bool? validate = null */)
         {
-            ODataQueryContext context = GetODataQueryContext();
-            HttpRequestMessage request = GetHttpRequestMessage();
-            ODataQueryOptions opts = new ODataQueryOptions(context, request);
+            HttpRequestMessage request = GetNewHttpRequestMessage();
+//            foreach(var p in _originalOptions.Request.Properties)
+//                if (! request.Properties.Keys.Contains(p.Key))
+//                    request.Properties.Add(p.Key, p.Value);
+
+            ODataQueryOptions opts = new ODataQueryOptions(Context, request);
 
             if (_validationSettings != null)
             {
@@ -118,37 +112,28 @@
             return opts;
         }
 
-        private HttpRequestMessage GetHttpRequestMessage()
+        private HttpConfiguration GetOriginalHttpConfig() => _originalOptions?.Request?.Properties["MS_HttpConfiguration"] as System.Web.Http.HttpConfiguration;
+
+        private HttpRequestMessage GetNewHttpRequestMessage()
         {
-            var request = new /*System.Net.Http.*/HttpRequestMessage(/*System.Net.Http.*/HttpMethod.Get, requestUri);
+            var request = new /*System.Net.Http.*/HttpRequestMessage(/*System.Net.Http.*/HttpMethod.Get, RequestUri);
+            request.SetConfiguration(Config);
+            return request;
+        }
 
-            var config = new System.Web.Http.HttpConfiguration();
-//            var config = _options.Request.GetConfiguration();
-
+        private static HttpConfiguration GetNewHttpConfig()
+        {
+            HttpConfiguration config = new System.Web.Http.HttpConfiguration();
             config.EnableDependencyInjection(); //1
             config.EnsureInitialized(); //2 
-
-//            config.SetAllowedODataParams(); // config.Count().Filter().OrderBy().Expand().Select().MaxTop(null); //new line
-
-            request.SetConfiguration(config);
-            return request;
+            return config;
         }
 
         private ODataQueryContext GetODataQueryContext()
         {
-//            var sets = model.EntityContainer.EntitySets().ToList();
-//            // sets.Select(_ => _.Type).OfType<>()
-//            var ofType = sets.Select(_ => _.Type).OfType<Microsoft.OData.Edm.EdmCollectionType>();
-//            /*var tt = */ofType.ToList().ForEach(_ => System.Diagnostics.Debug.WriteLine(_.ElementType.Definition.FullTypeName()));
-
-        
-
             IEdmEntitySet set = _edmModel.EntityContainer.EntitySets()
                 // .FirstOrDefault(_ => (_.Type as EdmCollectionType)?.ElementType.Definition.FullTypeName() == typeof(TDto).FullName);
                 .FirstOrDefault(_ => (_.Type as EdmCollectionType)?.ElementType.Definition.FullTypeName() == $"{_elementClrType.Namespace}.{_elementClrType.Name}");
-            // set.Should().NotBeNull($"Check that the model contains the EdmCollectionType for entity {typeof(TDto).FullName}");
-//            IEdmEntitySet set1 = model.EntityContainer.FindEntitySet(typeof(TDto).Name);
-
             // ODataPath path = new ODataPath();
             ODataPath path = new ODataPath(new EntitySetSegment(set));
 //          new EntitySetPathSegment("FakeEntitySet"),new KeyValuePathSegment("FakeKey"),new PropertyAccessPathSegment("FakeProperty"),new ValuePathSegment()

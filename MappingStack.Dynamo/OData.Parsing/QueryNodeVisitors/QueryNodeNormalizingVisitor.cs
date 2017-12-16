@@ -1,9 +1,10 @@
-﻿namespace MappingStack.OData.QueryNodeVisiting
+﻿namespace MappingStack.OData.Parsing.QueryNodeVisitors
 {
     using System;
     using System.Linq;
     using System.Text;
 
+    using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
 
     using MappingStack.OData.Parsing.Extensions;
@@ -19,7 +20,28 @@
     {
         public bool IsWrapWithParentheses { get; set; }
 
-        public override string Visit(ConstantNode nodeIn) => nodeIn.LiteralText; // return WrapWithIdent(nodeIn.ToLogString());
+        public override string Visit(ConstantNode nodeIn)
+        {
+            EdmEnumType edmEnumType = (nodeIn.TypeReference as EdmTypeReference)?.Definition as EdmEnumType;
+            bool isEnumType = edmEnumType != null;
+            bool isQualifiedEnumLiteral = isEnumType && nodeIn.LiteralText.StartsWith(edmEnumType.Namespace);
+            if (isEnumType && ! isQualifiedEnumLiteral)
+            {
+                IEdmPrimitiveType edmPrimitiveType = edmEnumType.UnderlyingType;
+                if (   edmPrimitiveType.PrimitiveKind == EdmPrimitiveTypeKind.Byte
+                    || edmPrimitiveType.PrimitiveKind == EdmPrimitiveTypeKind.Int16
+                    || edmPrimitiveType.PrimitiveKind == EdmPrimitiveTypeKind.Int32
+                    || edmPrimitiveType.PrimitiveKind == EdmPrimitiveTypeKind.Int64
+                    || edmPrimitiveType.PrimitiveKind == EdmPrimitiveTypeKind.SByte
+                )
+                {
+                    string normalized = $"{edmEnumType.Namespace}.{edmEnumType.Name}'{nodeIn.LiteralText}'";
+                    return normalized;
+                }
+            }
+            return nodeIn.LiteralText;
+        }
+
         public override string Visit(ConvertNode  nodeIn) => nodeIn.Source.Accept(this); // WrapWithIdent(string.Format("ConvertNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.Source.Accept(this)));
         public override string Visit(SingleValuePropertyAccessNode     nodeIn) => $"{AcceptAsPrefix(nodeIn.Source)}{nodeIn.Property.Name}"; // WrapWithIdent(string.Format(    "Property:[{0}<={1}]", nodeIn.Property.Name,nodeIn.Source.Accept(this)));
         public override string Visit(SingleValueOpenPropertyAccessNode nodeIn) => $"{AcceptAsPrefix(nodeIn.Source)}{nodeIn         .Name}"; // WrapWithIdent(string.Format("OpenProperty:[{0}]", nodeIn.Name));

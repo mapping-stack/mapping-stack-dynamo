@@ -4,7 +4,6 @@
 
     using System.Web.OData.Query;
 
-    using MappingStack.DynamicProperties;
     using MappingStack.Dynamo.Parsing;
     using MappingStack.OData.Net;
 
@@ -15,11 +14,10 @@
     {
         public static ODataQueryOptions AdjustOptions(ODataQueryOptions options, IEnumerable<DynamoContext> props)
         {
-            var factory = new QueryOptionsFactory(options);
-
             ODataQueryOptions newOptions = null;
             if (options.Filter != null) // dyn filter needs adjustment
             {   // string filterRawValue = options.Filter.RawValue;
+                var factory = new QueryOptionsFactory(options);
                 factory.Filter = options.Filter?.FilterClause.Expression.Accept(new DynamoQueryNodeVisitor(props));
                 if (options.SelectExpand != null)
                 {

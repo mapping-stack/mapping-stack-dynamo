@@ -1,3 +1,5 @@
+using MappingStack.Dynamo.Testing.TestFactory;
+
 namespace MappingStack.Dynamo.Testing.UnitTests
 {
     using System;
@@ -11,7 +13,6 @@ namespace MappingStack.Dynamo.Testing.UnitTests
     using MappingStack.Dynamo.Parsing;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using MappingStack.Dynamo.Testing.TestFactory;
 
     [TestClass] public class DynamoQueryNodeVisitorTests : BaseQueryNodeVisitorStringTests
     {
@@ -47,10 +48,10 @@ namespace MappingStack.Dynamo.Testing.UnitTests
         {
             IEnumerable<DynamoOptionKey> optionKeys = GetDynamoOptionKeys();
 
-            Expression<Func<ModelFactory.Dto, ModelFactory.DynamoDto>> dynLambdaTyped = ((dto) => dto.dynamo);
+            Expression<Func<SampleDto, DynamoDto>> dynLambdaTyped = ((dto) => dto.dynamo);
             LambdaExpression dynLambda = dynLambdaTyped; // is lambda
 
-            Expression<Func<ModelFactory.DynamoDto, ICollection<DynamicBool>>> dynListLambdaTyped = ((dynamoDto) => dynamoDto.dynBool);
+            Expression<Func<DynamoDto, ICollection<DynamicBool>>> dynListLambdaTyped = ((dynamoDto) => dynamoDto.dynBool);
             LambdaExpression dynListLambda = dynListLambdaTyped; // is lambda
 
             // TODO: pass it as a param of Extended Model (???)

@@ -1,4 +1,6 @@
-﻿namespace MappingStack.Dynamo.Testing.UnitTests
+﻿using MappingStack.Dynamo.Testing.TestFactory;
+
+namespace MappingStack.Dynamo.Testing.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -9,8 +11,6 @@
 
     using FluentAssertions;
 
-    using MappingStack.DynamicProperties.Testing.UnitTests;
-    using MappingStack.Dynamo.Testing.TestFactory;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using TAttribute = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
@@ -46,7 +46,7 @@
 
         protected abstract QueryNodeVisitor<S> GetNewQueryNodeStringVisitor(); // => new QueryNodeRewritingVisitor();
         protected abstract IDictionary<Action, AssertParams> Dictionary { get; }
-        protected static ModelFactory.Dto e => null; // throw nameof only exception  
+        protected static SampleDto e => null; // throw nameof only exception  
         protected class AssertParams
         {
             public string Filter { get; }

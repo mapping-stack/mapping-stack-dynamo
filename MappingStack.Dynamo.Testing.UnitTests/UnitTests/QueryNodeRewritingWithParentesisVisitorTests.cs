@@ -1,3 +1,5 @@
+using MappingStack.OData.Parsing.QueryNodeVisitors;
+
 namespace MappingStack.Dynamo.Testing.UnitTests
 {
     using System;
@@ -5,8 +7,6 @@ namespace MappingStack.Dynamo.Testing.UnitTests
 
     using Microsoft.OData.UriParser;
 
-    using MappingStack.OData.QueryNodeVisiting;
-    
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass] public class QueryNodeRewritingWithPasrenthesisVisitorTests : BaseQueryNodeVisitorStringTests

@@ -1,18 +1,15 @@
 ﻿namespace MappingStack.DynamicProperties
 {
-    using System;
     using System.Collections.Generic;
 
-    using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
 
     using System.Diagnostics;
 
     using T = System.Object;
 
-    public class DebugQueryNodeVisitor 
+    public class QueryNodeDebugVisitor 
         : QueryNodeVisitor<T> /* trivial object implementation */
-
     {
         private const bool isBreakIfAttachedDefault = true;
 
