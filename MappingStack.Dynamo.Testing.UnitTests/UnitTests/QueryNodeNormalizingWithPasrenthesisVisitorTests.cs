@@ -36,6 +36,7 @@ namespace MappingStack.Dynamo.Testing.UnitTests
             { b.Open1         , new AssertParams("dynamo/flag1 ne null"                     , "(dynamo/flag1 ne null)")},
             { b.Open2         , new AssertParams("dynamo/flag1 eq null"                     , "(dynamo/flag1 eq null)")},
             { b.Open3         , new AssertParams("dynamo/flag1 eq true"                     , "(dynamo/flag1 eq true)")},
+            { b.Open4         , new AssertParams("dynamo/flag1 eq false"                    , "(dynamo/flag1 eq false)")},
 
             { b.DeepAny       , new AssertParams(  "dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq true)"  , "(dynamo/dynBool/any(o: ((o/dynamicKey eq 'flag1') and (o/value eq true))))")},
             { b.DeepAnyPar    , new AssertParams( "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq true))" , "(dynamo/dynBool/any(o: ((o/dynamicKey eq 'flag1') and (o/value eq true))))")},

@@ -42,6 +42,10 @@ namespace MappingStack.Dynamo.Testing.UnitTests
             { b.Open1 , new AssertParams("dynamo/flag1 ne null" , "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value ne null))")},
             { b.Open2 , new AssertParams("dynamo/flag1 eq null" , "(dynamo/dynBool/all(o: o/dynamicKey eq 'flag1' and o/value eq null) or dynamo/dynBool/all(o: o/dynamicKey ne 'flag1'))")},
             { b.Open3 , new AssertParams("dynamo/flag1 eq true" , "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq true))")},
+            { b.Open4 , new AssertParams("dynamo/flag1 eq false", 
+                                                               // "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq false) or dynamo/dynBool/all(o: o/dynamicKey ne 'flag1'))"
+                                                                  "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq false))"
+            )},
 
             { b.DeepAny       , new AssertParams(  "dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq true)"  , "(dynamo/dynBool/any(o: ((o/dynamicKey eq 'flag1') and (o/value eq true))))")},
             { b.DeepAnyPar    , new AssertParams( "(dynamo/dynBool/any(o: o/dynamicKey eq 'flag1' and o/value eq true))" , "(dynamo/dynBool/any(o: ((o/dynamicKey eq 'flag1') and (o/value eq true))))")},

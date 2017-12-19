@@ -46,7 +46,7 @@
                 {
                     string dynFlag = prop.DynTypedListLambdas.FirstOrDefault().GetMemberName();
                     string dynamo = left.Replace($"/{name}", "");
-                    
+
                     DynamoOptionKey key = prop.OptionKeys.FirstOrDefault(_ => _.jsonId == name);
 
                     if (key == null) continue;
@@ -68,11 +68,12 @@
                     string value = "value"; // IDynamicOptionGeneral.value
                     string o = "o";
 
-                    factoryFilter = WrapWithParentheses(() => 
-                        right == @null && opKeyword == eq
-                        ? $"{dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right}) {or} {dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {ne} '{key.key}')"
-                        : $"{dynamo}/{dynFlag}/{any}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right})"
-                    );
+                    factoryFilter = WrapWithParentheses(() =>
+                    {
+                        if (right == @null   && opKeyword == eq) return $"{dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right}) {or} {dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {ne} '{key.key}')";
+                     // if (right == "false" && opKeyword == eq) return $"{dynamo}/{dynFlag}/{any}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right}) {or} {dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {ne} '{key.key}')";
+                                                                 return $"{dynamo}/{dynFlag}/{any}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right})";
+                    });
                     break;
                 }
             }

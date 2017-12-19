@@ -41,6 +41,7 @@ namespace MappingStack.Dynamo.Testing.UnitTests
         [T] public void Open1    () => A(M.GetCurrentMethod());
         [T] public void Open2    () => A(M.GetCurrentMethod());
         [T] public void Open3    () => A(M.GetCurrentMethod());
+        [T] public void Open4    () => A(M.GetCurrentMethod());
 
         [T] public void DeepAny      () => A(M.GetCurrentMethod());
         [T] public void DeepAnyPar   () => A(M.GetCurrentMethod());
