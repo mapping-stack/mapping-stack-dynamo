@@ -1,10 +1,10 @@
-namespace MappingStack.Dynamo.Testing.TestFactory
+using System.Collections.Generic;
+using System.Linq;
+
+using MappingStack.Dynamo.BaseDto;
+
+namespace MappingStack.Dynamo.Testing.TestFactory.DtoModel
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using MappingStack.Dynamo.BaseDto;
-
     public class DynamoDto
     {
         public IDictionary<string, object> _dyn // to be exposed dynamically

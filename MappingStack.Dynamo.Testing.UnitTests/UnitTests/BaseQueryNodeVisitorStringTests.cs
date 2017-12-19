@@ -1,4 +1,5 @@
 ﻿using MappingStack.Dynamo.Testing.TestFactory;
+using MappingStack.Dynamo.Testing.TestFactory.DtoModel;
 
 namespace MappingStack.Dynamo.Testing.UnitTests
 {
@@ -31,6 +32,10 @@ namespace MappingStack.Dynamo.Testing.UnitTests
 
         [T] public void Inner0   () => A(M.GetCurrentMethod());
         [T] public void Inner1   () => A(M.GetCurrentMethod());
+
+        [T, I] public void Collection0   () => A(M.GetCurrentMethod());
+        [T]    public void CollectionAny0() => A(M.GetCurrentMethod());
+        [T]    public void CollectionAll0() => A(M.GetCurrentMethod());
 
         [T] public void Open0    () => A(M.GetCurrentMethod());
         [T] public void Open1    () => A(M.GetCurrentMethod());

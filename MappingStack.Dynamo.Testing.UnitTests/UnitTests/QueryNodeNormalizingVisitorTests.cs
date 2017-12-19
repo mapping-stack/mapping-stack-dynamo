@@ -9,13 +9,13 @@ namespace MappingStack.Dynamo.Testing.UnitTests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass] public class QueryNodeRewritingVisitorTests : BaseQueryNodeVisitorStringTests
+    [TestClass] public class QueryNodeNormalizingVisitorTests : BaseQueryNodeVisitorStringTests
     {
-        protected static readonly BaseQueryNodeVisitorStringTests b = new QueryNodeRewritingVisitorTests();
+        protected static readonly BaseQueryNodeVisitorStringTests b = new QueryNodeNormalizingVisitorTests();
         protected override QueryNodeVisitor<string> GetNewQueryNodeStringVisitor()  => new QueryNodeNormalizingVisitor();
 
-        protected override IDictionary<Action, AssertParams> Dictionary => d;
-        private static readonly Dictionary<Action,AssertParams> d = new Dictionary<Action, AssertParams>()
+        protected override IDictionary<Action, AssertParams> Dictionary => _d;
+        private static readonly Dictionary<Action,AssertParams> _d = new Dictionary<Action, AssertParams>()
         {
             { b.True          , new AssertParams("true")},
             { b.False         , new AssertParams("false")},
@@ -27,6 +27,10 @@ namespace MappingStack.Dynamo.Testing.UnitTests
 
             { b.Inner0        , new AssertParams("inner ne null"                            , "inner ne null")},
             { b.Inner1        , new AssertParams("inner/level eq 3"                         , "inner/level eq 3")},
+
+            { b.Collection0   , new AssertParams("collection ne null")},
+            { b.CollectionAny0, new AssertParams("collection/any(el: el/level eq 3)"        , "collection/any(el: el/level eq 3)")},
+            { b.CollectionAll0, new AssertParams("collection/all(el: el/level eq 3)"        , "collection/all(el: el/level eq 3)")},
 
             { b.Open0         , new AssertParams("dynamo ne null"                           , "dynamo ne null")},
             { b.Open1         , new AssertParams("dynamo/flag1 ne null"                     , "dynamo/flag1 ne null")},

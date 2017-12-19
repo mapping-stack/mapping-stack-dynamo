@@ -54,15 +54,25 @@
                     // odata
                     string any = "any";
                     string all = "all";
+
                     string eq = "eq";
+                    string ne = "ne";
+
+                    string or = "or";
                     string and = "and";
+
+                    string @null = "null";
 
                     // identifiers
                     string dynamicKey = "dynamicKey"; // IDynamicOptionGeneral.optionKey
                     string value = "value"; // IDynamicOptionGeneral.value
                     string o = "o";
 
-                    factoryFilter = WrapWithParentheses(() => $"{dynamo}/{dynFlag}/{any}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right})");
+                    factoryFilter = WrapWithParentheses(() => 
+                        right == @null && opKeyword == eq
+                        ? $"{dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right}) {or} {dynamo}/{dynFlag}/{all}({o}: {o}/{dynamicKey} {ne} '{key.key}')"
+                        : $"{dynamo}/{dynFlag}/{any}({o}: {o}/{dynamicKey} {eq} '{key.key}' {and} {o}/{value} {opKeyword} {right})"
+                    );
                     break;
                 }
             }

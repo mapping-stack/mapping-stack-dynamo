@@ -1,8 +1,11 @@
 ﻿using System.Web.OData.Builder;
 using System.Web.OData.Query;
 
-using MappingStack.OData.Net;
 using Microsoft.OData.Edm;
+
+using MappingStack.OData.Net;
+
+using MappingStack.Dynamo.Testing.TestFactory.DtoModel;
 
 namespace MappingStack.Dynamo.Testing.TestFactory
 {

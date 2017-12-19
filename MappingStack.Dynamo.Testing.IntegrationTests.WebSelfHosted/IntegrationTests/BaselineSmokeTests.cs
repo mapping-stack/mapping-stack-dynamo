@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
+using System.Net.Http;
+using System.Net.Http.Headers;
+
 using FluentAssertions;
-using MappingStack.Dynamo.Testing.TestFactory;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using MappingStack.Dynamo.Testing.TestFactory.DtoModel;
 
 using static MappingStack.Dynamo.Testing.IntegrationTests.TestAssembly;
 

@@ -1,6 +1,6 @@
 namespace MappingStack.Dynamo.Testing.TestFactory.DtoModel
 {
-    public class InnerDto 
+    public class CollectionElementDto 
     {
         public int id { get; set; }
         public int level { get; set; }

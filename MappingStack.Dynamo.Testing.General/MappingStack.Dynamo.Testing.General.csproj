@@ -72,6 +72,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFactory\DtoModel\CollectionElementDto.cs" />
     <Compile Include="TestFactory\DtoModel\SampleDto.cs" />
     <Compile Include="TestFactory\ModelFactory.cs" />
   </ItemGroup>

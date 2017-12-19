@@ -49,15 +49,22 @@
         public override string Visit(SingleComplexNode                 nodeIn) => $"{nodeIn.Property.Name}{nodeIn.Source.Accept(this)}"; // return base.Visit(nodeIn);
         public override string Visit(SingleNavigationNode nodeIn)
         {
-            string r = $"{nodeIn.NavigationProperty.Name}{nodeIn.Source.Accept(this)}";
+            string r = $"{AcceptAsPrefix(nodeIn.Source)}{nodeIn.NavigationProperty.Name}";
             return r; // WrapWithIdent(string.Format("SingleNavigationNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.NavigationSource));
         }
+        public override string Visit(CollectionNavigationNode nodeIn)
+        {
+            string r = $"{AcceptAsPrefix(nodeIn.Source)}{nodeIn.NavigationProperty.Name}";
+            return r; // WrapWithIdent(string.Format("CollectionNavigationNode:[{0}<={1}]", nodeIn.CollectionType, nodeIn.Source.Accept(this)));
+        }
+
         public override string Visit(BinaryOperatorNode nodeIn) => WrapBinary(() => $"{nodeIn.Left.Accept(this)}{_SP}{nodeIn.OperatorKind.GetKeyword()}{_SP}{nodeIn.Right.Accept(this)}");
         public override string Visit(NonResourceRangeVariableReferenceNode nodeIn) => nodeIn.Name; // return base.Visit(nodeIn);
         public override string Visit(ResourceRangeVariableReferenceNode nodeIn) // EntityRangeVariableReferenceNode
         {
             // assert nodeIn.Name == "$it"
-            var r = string.Empty; // nodeIn.Name;
+            // var r = string.Empty; // nodeIn.Name;
+            var r = nodeIn.RangeVariable.CollectionResourceNode == null /* nodeIn.Name == "$it" */ ? string.Empty : nodeIn.Name;
             return r; // + nodeIn.
             // return WrapWithIdent(string.Format("EntityRangeVariableReferenceNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.Name));
         }
@@ -96,10 +103,6 @@
                 () => nodeIn.Value.Accept(this));
         }
 
-        public override string Visit(CollectionNavigationNode nodeIn)
-        {
-            return WrapWithIdent(string.Format("CollectionNavigationNode:[{0}<={1}]", nodeIn.CollectionType, nodeIn.Source.Accept(this)));
-        }
         #endregion
 
 #region Ident from Sample, to eliminate eventually
